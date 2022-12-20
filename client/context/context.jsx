@@ -1,5 +1,6 @@
 import { useState, useEffect, createContext } from "react";
 import { ethers } from "ethers";
+import {contractABI, contractAddress} from "../utils/constant"
 
 export const AppContext = createContext();
 
@@ -50,8 +51,70 @@ export const AppProvider = ({ children }) => {
         }
       };
     
+      const createPost = async (form) => {
+        try {
+          const { ethereum } = window;
+          if (ethereum) {
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            await provider.send("eth_requestAccounts", []);
+            const signer = provider.getSigner();
+            const contract = new ethers.Contract(
+              contractAddress,
+              contractABI,
+              signer
+            );
+    
+            console.log("Going to pop wallet now to pay gas...");
+            const tx = await contract.createPost(
+              form.caption, // title
+              form.url
+            );
+            await tx.wait();
+    
+            console.log("contract call success", tx);
+          }
+        } catch (error) {
+          console.log("Create Post Failed", error);
+        }
+      };
+
+
+      const getPosts = async ()  => {
+        try {
+          const { ethereum } = window;
+          if (ethereum) {
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            await provider.send("eth_requestAccounts", []);
+            const signer = provider.getSigner();
+            const contract = new ethers.Contract(
+              contractAddress,
+              contractABI,
+              signer
+            );
+    
+            const posts = await contract.getPost()
+    
+            // console.log(posts)
+
+            const parsedPosts = posts.map((post, i) => ({
+              owner: post.owner,
+              title: post.caption,
+              image: post.url,
+              likes: post.likes,
+              pId: i,
+            }));
+
+    
+            console.log("contract call success");
+            return parsedPosts;
+          }
+        } catch (error) {
+          console.log("get post failed", error);
+        }
+      }
+
     return (
-        <AppContext.Provider value={{currentAccount, connectWallet}}>
+        <AppContext.Provider value={{currentAccount, connectWallet, createPost, getPosts}}>
           {children}
         </AppContext.Provider>
       );

@@ -1,7 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "@next/font/google";
-import Navbar from "../components/Navbar";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import Feed from "../components/Feed";
@@ -25,10 +24,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {/* <Navbar /> */}
       <Header />
 
-      <main className="flex max-w-7xl mx-auto px-5 overflow-hidden ">
+      <main className="flex max-w-7xl mx-auto px-5 ">
         <Sidebar />
         <Feed />
         <Widget />

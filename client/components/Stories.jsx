@@ -30,7 +30,7 @@ const stories = [
 
 function Stories() {
   return (
-    <div className="flex items-center space-x-3 mx-auto">
+    <div className="flex items-center space-x-3 mx-auto scrollbar-hide">
       {stories.map((story) => (
         <StoryCard
           key={story.name}
