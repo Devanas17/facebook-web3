@@ -14,7 +14,7 @@ import SidebarRow from "./SidebarRow";
 
 function Sidebar() {
   return (
-    <div className="mt-5 flex-[0.2] p-2">
+    <div className="mt-5 flex-[0.3] p-2">
 
       <SidebarRow Icon={UsersIcon} title="Friends" />
       <SidebarRow Icon={UserGroupIcon} title="Groups" />
