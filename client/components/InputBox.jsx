@@ -27,6 +27,7 @@ function InputBox() {
         setIsLoading(true);
         await createPost({ ...form });
         setIsLoading(false);
+        window.location.reload()
       } else {
         alert("Provide valid image URL");
         setForm({ ...form, url: "" });

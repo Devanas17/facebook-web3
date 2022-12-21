@@ -8,10 +8,9 @@ const Card = ({ owner, title, image, likes, pId }) => {
   const { like } = useContext(AppContext);
   const handleLike = async () => {
     setIsLoading(true);
-
     await like(pId + 1);
-
     setIsLoading(false);
+    window.location.reload()
   };
 
   const likesInNumber = likes.toNumber();

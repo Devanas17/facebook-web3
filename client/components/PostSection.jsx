@@ -17,7 +17,7 @@ const PostSection = () => {
   
     useEffect(() => {
        fetchPosts();
-    }, [currentAccount, contract]);
+    }, [contract]);
 
   return (
     <div className='text-black flex flex-cols items-center justify-center'>

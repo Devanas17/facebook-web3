@@ -30,7 +30,7 @@ export const AppProvider = ({ children }) => {
 
   useEffect(() => {
     ethereumClient();
-  }, []);
+  }, [contract]); 
 
   const checkIfWalletIsConnected = async () => {
     try {
