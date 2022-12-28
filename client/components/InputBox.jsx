@@ -21,7 +21,6 @@ function InputBox() {
 
   function sendPost(e) {
     e.preventDefault();
-    console.log("Hello");
     checkIfImage(form.url, async (exists) => {
       if (exists) {
         setIsLoading(true);

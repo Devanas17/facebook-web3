@@ -10,7 +10,6 @@ const PostSection = () => {
     const fetchPosts = async () => {
       setIsLoading(true);
       const data = await getPosts();
-      console.log("All Posts", data)
       setPosts(data);
       setIsLoading(false);
     };

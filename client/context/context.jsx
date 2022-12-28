@@ -12,7 +12,6 @@ export const AppProvider = ({ children }) => {
       const { ethereum } = window;
       if (ethereum) {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        await provider.send("eth_requestAccounts", []);
         const signer = provider.getSigner();
         const contract = new ethers.Contract(
           contractAddress,
@@ -30,29 +29,44 @@ export const AppProvider = ({ children }) => {
 
   useEffect(() => {
     ethereumClient();
-  }, [contract]); 
+  }, []); 
 
   const checkIfWalletIsConnected = async () => {
     try {
-      const { ethereum } = window;
       if (!ethereum) {
-        alert("Make sure you have metamask!");
+        console.log("Make sure you have MetaMask!");
         return;
       } else {
         console.log("We have the ethereum object", ethereum);
-      }
 
-      const accounts = await ethereum.request({ method: "eth_accounts" });
-      if (accounts.length) {
-        const account = accounts[0];
-        console.log("Found an authorized account:", account);
-        setCurrentAccount(account);
-      } else {
-        console.log("No authorized account found");
+        /*
+         * Check if we're authorized to access the user's wallet
+         */
+        const accounts = await ethereum.request({ method: "eth_accounts" });
+
+        /*
+         * User can have multiple authorized accounts, we grab the first one if its there!
+         */
+        if (accounts.length !== 0) {
+          const account = accounts[0];
+          console.log("Found an authorized account:", account);
+          setCurrentAccount(account);
+        } else {
+          console.log("No authorized account found");
+        }
       }
     } catch (error) {
       console.log(error);
-      throw new Error("No Ethereum object.");
+    }
+  };
+
+  const checkNetwork = async () => {
+    try {
+      if (window.ethereum.networkVersion !== "5") {
+        alert("Please connect to Goerli!");
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -129,6 +143,10 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  useEffect(() => {
+    checkIfWalletIsConnected()
+    checkNetwork()
+  }, [])
 
   const logout = async () => {
     try {
